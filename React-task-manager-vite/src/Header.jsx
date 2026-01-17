@@ -9,6 +9,7 @@ export default function Header() {
     const [listArray, setListArray] = useState([])
     const [taskName, setTaskName] = useState('')
     const [modalVisible, setModalVisible] = useState(false)
+    const [taskToEdit, setTaskToEdit] = useState(null)
 
     const handleClick = () => {
         let taskDetails = {
@@ -22,12 +23,19 @@ export default function Header() {
     function handleDelete(id) {
         setListArray(listArray.filter(item => item.id !== id))
     }
+
+    // clicked from ToDoList
     function handleEdit(id) {
-        console.log(id)
         setModalVisible(true)
+        setTaskToEdit(listArray.find(task => task.id === id))
     }
     function toggleModalVisibility() {
         setModalVisible(!modalVisible)
+    }
+    function EditTaskName(id, newTaskName){
+        setListArray(listArray.map(task => task.id===id ? {...task, taskName: newTaskName} : task))
+        setModalVisible(false)
+
     }
     function handleCompleted(id) {
         setListArray(listArray.map(item => {
@@ -44,6 +52,8 @@ export default function Header() {
                     value={taskName}
                     onChange={(e) => setTaskName(e.target.value)}
                 />
+                
+                {/* 5.1 ❖ Implement event handling for adding a new to-do item. (10 marks) */}
                 <button className='btn-primary bg-fuchsia-600' onClick={handleClick}>Add</button>
             </article>
             <ToDoList
@@ -53,7 +63,7 @@ export default function Header() {
                 handleDelete={handleDelete}
             />
             {
-                modalVisible && createPortal(<Modal handleClose={toggleModalVisibility} />, document.body)
+                modalVisible && createPortal(<Modal editTaskName={EditTaskName} taskDetails={taskToEdit} handleClose={toggleModalVisibility} />, document.body)
             }
         </>
 
