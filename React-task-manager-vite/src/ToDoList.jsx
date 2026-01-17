@@ -4,8 +4,10 @@ import './index.css'
 
 export default function ToDoList({listArray, handleCompleted, handleEdit, handleDelete}){
     return (
-        listArray.length === 0 ? 'No tasks available' :
-        
+
+        // If no tasks are available, displays a message.
+        listArray.length === 0 ? <h2 className="text-xl align-center text-center top-1/2">No tasks available</h2> :
+
         // 4.2 map function. (5 marks)
         listArray.map((item)=>{
 
